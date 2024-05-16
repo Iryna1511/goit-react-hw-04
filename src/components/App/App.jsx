@@ -1,0 +1,8 @@
+// import { useState } from 'react'
+// import css from "./App.module.css";
+
+function App() {
+  return <h1>Gallery</h1>;
+}
+
+export default App;
