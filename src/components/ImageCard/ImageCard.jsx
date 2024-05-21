@@ -1,4 +1,4 @@
-export default function ImageCard(images) {
+export default function ImageCard({ images }) {
   return (
     <>
       <a href={images.urls.regular}>

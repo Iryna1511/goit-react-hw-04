@@ -17,8 +17,8 @@ function App() {
 
     async function fetchImages() {
       try {
-        const images = await getImages(query, page);
-        setImages((prevState) => [...prevState, ...images]);
+        const imagesData = await getImages(query, page);
+        setImages((prevState) => [...prevState, ...imagesData]);
       } catch (error) {
         console.log(error);
       }
@@ -26,10 +26,16 @@ function App() {
 
     fetchImages();
   }, [query, page]);
+
+  const handleSearch = async (topic) => {
+    setQuery(topic);
+    setPage(1);
+    setImages([]);
+  };
   // console.log(getArticles("sun", 1));
   return (
     <div>
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <ImageGallery data={images} />
     </div>
   );

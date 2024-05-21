@@ -13,7 +13,8 @@ export const getImages = async (query, currentPage) => {
     },
   });
 
-  return response.data.hits;
+  console.log(response.data.results);
+  return response.data.results;
 };
 
 //      "id": "obsBswnv7FI",
