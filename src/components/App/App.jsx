@@ -3,24 +3,30 @@ import { useEffect, useState } from "react";
 import { getImages } from "../api";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
+import Loader from "../Loader/Loader";
+import ErrorMsg from "../ErrorMsg/ErrorMsg";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 
 function App() {
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-
-  //  const [isLoading, setIsLoading] = useState(false);
-  //  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     if (query.trim() === "") return;
 
     async function fetchImages() {
       try {
+        setIsError(false);
+        setIsLoading(true);
         const imagesData = await getImages(query, page);
         setImages((prevState) => [...prevState, ...imagesData]);
       } catch (error) {
-        console.log(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -32,11 +38,21 @@ function App() {
     setPage(1);
     setImages([]);
   };
-  // console.log(getArticles("sun", 1));
+
+  const handleLoadMore = async () => {
+    setPage(page + 1);
+  };
+
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
-      <ImageGallery data={images} />
+      {images.length > 0 && <ImageGallery data={images} />}
+      {isLoading && <Loader />}
+      {isError && <ErrorMsg />}
+
+      {images.length > 0 && !isLoading && (
+        <LoadMoreBtn onLoadMore={handleLoadMore} />
+      )}
     </div>
   );
 }
