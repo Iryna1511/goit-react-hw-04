@@ -14,5 +14,5 @@ export const getImages = async (query, currentPage) => {
   });
 
   console.log(response.data);
-  return response.data.results;
+  return response.data;
 };
