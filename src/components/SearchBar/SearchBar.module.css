@@ -3,15 +3,21 @@
   background-color: #721dc2;
 }
 .form {
+  display: flex;
+  align-items: center;
   max-width: 350px;
   margin: auto;
 }
 .input {
-  padding: 4px 8px;
-  margin-right: 12px;
+  padding: 8px 12px;
+  margin-right: 16px;
+  height: 40px;
 }
 .btn {
-  padding: 4px 8px;
+  padding: 8px 12px;
   max-width: 120px;
+  color: #212121;
   background-color: #f1ea20;
+  border: none;
+  font-size: 20px;
 }

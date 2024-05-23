@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 // import css from "./App.module.css";
@@ -8,6 +8,7 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import Loader from "../Loader/Loader";
 import ErrorMsg from "../ErrorMsg/ErrorMsg";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "../ImageModal/ImageModal";
 
 export default function App() {
   const [images, setImages] = useState([]);
@@ -16,8 +17,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isLast, setIsLast] = useState(false);
-
-  const imageGalleryRef = useRef();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageInfo, setImageInfo] = useState({ alt: "", url: "" });
 
   useEffect(() => {
     async function fetchImages() {
@@ -53,7 +54,17 @@ export default function App() {
 
   const handleLoadMore = async () => {
     setPage(page + 1);
-    console.log(imageGalleryRef.current);
+    scrollBy(0, 2000);
+  };
+
+  const openModal = (alt, url) => {
+    setIsModalOpen(true);
+    setImageInfo({ alt, url });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setImageInfo({ alt: "", url: "" });
   };
 
   return (
@@ -61,24 +72,18 @@ export default function App() {
       <SearchBar onSearch={handleSearch} />
       <Toaster />
       {images.length > 0 && (
-        <ImageGallery ref={imageGalleryRef} data={images} />
+        <ImageGallery openModal={openModal} data={images} />
       )}
+      <ImageModal
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        imageInfo={imageInfo}
+      />
       {isLoading && <Loader />}
       {isError && <ErrorMsg />}
-
-      {images.length > 0 && !isLoading && !isLast && (
+      {images.length > 0 && !isLoading && !isLast && !isError && (
         <LoadMoreBtn onLoadMore={handleLoadMore} />
       )}
     </div>
   );
 }
-
-//  const handleScroll = () => {
-//    const form = formRef.current;
-//    const dims = form.getBoundingClientRect();
-
-//    window.scrollTo({
-//      top: dims.top,
-//      behavior: "smooth",
-//    });
-//  };
