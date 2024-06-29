@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 // import css from "./App.module.css";
@@ -19,6 +19,19 @@ export default function App() {
   const [isLast, setIsLast] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageInfo, setImageInfo] = useState({ alt: "", url: "" });
+
+  const galleryRef = createRef();
+
+  useEffect(() => {
+    console.log(galleryRef);
+    if (!galleryRef.current) return;
+    const heightOfTwoRows = 400;
+    const scrollHeight = galleryRef.current.offsetTop + heightOfTwoRows;
+    window.scrollBy({
+      top: scrollHeight,
+      behavior: "smooth",
+    });
+  });
 
   useEffect(() => {
     async function fetchImages() {
@@ -72,7 +85,7 @@ export default function App() {
       <SearchBar onSearch={handleSearch} />
       <Toaster />
       {images.length > 0 && (
-        <ImageGallery openModal={openModal} data={images} />
+        <ImageGallery ref={galleryRef} openModal={openModal} data={images} />
       )}
       <ImageModal
         closeModal={closeModal}
