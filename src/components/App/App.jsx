@@ -25,12 +25,14 @@ export default function App() {
   useEffect(() => {
     console.log(galleryRef);
     if (!galleryRef.current) return;
-    const heightOfTwoRows = 400;
-    const scrollHeight = galleryRef.current.offsetTop + heightOfTwoRows;
-    window.scrollBy({
-      top: scrollHeight,
-      behavior: "smooth",
-    });
+    if (page > 1) {
+      const heightOfTwoRows = 400;
+      const scrollHeight = galleryRef.current.offsetTop + heightOfTwoRows;
+      window.scrollBy({
+        top: scrollHeight,
+        behavior: "smooth",
+      });
+    }
   });
 
   useEffect(() => {
